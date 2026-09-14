@@ -63,6 +63,26 @@ is_agent_file() {
   [[ -f "$1" ]] && [[ "$(head -1 "$1")" == "---" ]]
 }
 
+# is_persona_header <lowercase heading> — OpenClaw section routing.
+# Keep the English and French personas in the same output files.
+is_persona_header() {
+  local header_lower="$1"
+  if [[ "$header_lower" =~ identity ]] ||
+     [[ "$header_lower" =~ identité ]] ||
+     [[ "$header_lower" =~ learning.*memory ]] ||
+     [[ "$header_lower" =~ apprentissage.*mémoire ]] ||
+     [[ "$header_lower" =~ communication ]] ||
+     [[ "$header_lower" =~ style ]] ||
+     [[ "$header_lower" =~ critical.rule ]] ||
+     [[ "$header_lower" =~ rules.you.must.follow ]] ||
+     [[ "$header_lower" =~ règles.*(impératives|critiques|respecter|suivre) ]] ||
+     [[ "$header_lower" =~ langue.de.travail ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 # ---------------------------------------------------------------------------
 # 2. set -e-safe primitives  (absorbs #505 — no more `(( x++ )) || true`)
 # ---------------------------------------------------------------------------

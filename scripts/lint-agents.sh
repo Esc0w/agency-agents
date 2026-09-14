@@ -10,6 +10,10 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib.sh
+. "$SCRIPT_DIR/lib.sh"
+
 # Keep in sync with AGENT_DIRS in scripts/convert.sh
 AGENT_DIRS=(
   academic
@@ -33,25 +37,10 @@ AGENT_DIRS=(
 )
 
 REQUIRED_FRONTMATTER=("name" "description" "color")
-RECOMMENDED_SECTIONS=("Identity" "Core Mission" "Critical Rules")
+RECOMMENDED_SECTIONS=("Identity|Identité" "Core Mission|Mission principale" "Critical Rules|Règles impératives|Règles critiques")
 
 errors=0
 warnings=0
-
-classify_header_target() {
-  local header_lower="$1"
-
-  if [[ "$header_lower" =~ identity ]] ||
-     [[ "$header_lower" =~ learning.*memory ]] ||
-     [[ "$header_lower" =~ communication ]] ||
-     [[ "$header_lower" =~ style ]] ||
-     [[ "$header_lower" =~ critical.rule ]] ||
-     [[ "$header_lower" =~ rules.you.must.follow ]]; then
-    printf 'soul'
-  else
-    printf 'agents'
-  fi
-}
 
 lint_file() {
   local file="$1"
@@ -107,7 +96,7 @@ lint_file() {
   # `set -o pipefail` that 141 becomes the pipeline's status and is indistinguishable
   # from "no match", so a large body raced its way to a spurious WARN.
   for section in "${RECOMMENDED_SECTIONS[@]}"; do
-    if ! grep -qi -- "$section" <<<"$body"; then
+    if ! grep -qiE -- "$section" <<<"$body"; then
       echo "WARN  $file: missing recommended section '${section}'"
       warnings=$((warnings + 1))
     fi
@@ -127,9 +116,7 @@ lint_file() {
     if [[ "$line" =~ ^##[[:space:]] ]]; then
       local header_lower
       header_lower=$(printf '%s' "$line" | tr '[:upper:]' '[:lower:]')
-      local target
-      target=$(classify_header_target "$header_lower")
-      if [[ "$target" == "soul" ]]; then
+      if is_persona_header "$header_lower"; then
         soul_headers=$((soul_headers + 1))
       else
         agents_headers=$((agents_headers + 1))

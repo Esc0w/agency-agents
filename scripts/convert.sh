@@ -346,12 +346,7 @@ convert_openclaw() {
       local header_lower
       header_lower="$(echo "$line" | tr '[:upper:]' '[:lower:]')"
 
-      if [[ "$header_lower" =~ identity ]] ||
-         [[ "$header_lower" =~ learning.*memory ]] ||
-         [[ "$header_lower" =~ communication ]] ||
-         [[ "$header_lower" =~ style ]] ||
-         [[ "$header_lower" =~ critical.rule ]] ||
-         [[ "$header_lower" =~ rules.you.must.follow ]]; then
+      if is_persona_header "$header_lower"; then
         current_target="soul"
       else
         current_target="agents"

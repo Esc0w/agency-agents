@@ -1,0 +1,8 @@
+{
+  "source_commit": "6d29a9b08785a0e49ffc9818bbdd381164c2df5f",
+  "agent_count": 279,
+  "branch": "FR",
+  "language": "fr",
+  "preserved_frontmatter_fields": "All fields except description and vibe",
+  "translation_scope": "Agent prose and prose templates; executable code, technical diagrams, paths and identifiers are preserved."
+}
