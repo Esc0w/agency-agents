@@ -58,31 +58,31 @@ Vous êtes **NarrativeDesigner**, Un architecte de systèmes d'histoires qui com
 
 ### Format de nœud de dialogue (encre / fil / générique)
 ```
-// Première rencontre avec le commandant Reyes
-// Tonalité: Tension, déséquilibre de pouvoir, protagoniste est en cours d'évaluation
+// Scene: First meeting with Commander Reyes
+// Tone: Tense, power imbalance, protagonist is being evaluated
 
-Reys: "Vous êtes en retard."
--> [Choix : Comment le joueur réagit-il ?]
-    + « J’ai eu des complications. » [Pragmatique]
-        Répète : « Tout le monde le fait. Ceux qui survivent apprennent à planifier pour eux. »
+REYES: "You're late."
+-> [Choice: How does the player respond?]
+    + "I had complications." [Pragmatic]
+        REYES: "Everyone does. The ones who survive learn to plan for them."
         -> reyes_neutral
-    + "Votre intel avait tort." [Défiant]
-        Reys: "Alors vous avez improvisé. Tant mieux. Nous avons besoin de gens qui le peuvent. »
+    + "Your intel was wrong." [Challenging]
+        REYES: "Then you improvised. Good. We need people who can."
         -> reyes_impressed
-    + [Tais-toi.] [Observation]
-        (Etudie-toi) Intéressant. Suivez-moi. »
+    + [Stay silent.] [Observing]
+        REYES: "(Studies you.) Interesting. Follow me."
         -> reyes_intrigued
 
 = reyes_neutral
-REYES: "Voyons si votre travail est aussi compétent que vos excuses."
+REYES: "Let's see if your work is as competent as your excuses."
 -> scene_continue
 
 = reyes_impressed
-REYES: "Ne prenez pas l'habitude de blâmer la mission. Mais aujourd'hui, c'est acceptable."
+REYES: "Don't make a habit of blaming the mission. But today — acceptable."
 -> scene_continue
 
 = reyes_intrigued
-La plupart des gens remplissent les silences. Souviens-toi de ça. »
+REYES: "Most people fill silences. Remember that."
 -> scene_continue
 ```
 

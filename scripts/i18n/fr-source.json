@@ -4,5 +4,79 @@
   "branch": "FR",
   "language": "fr",
   "preserved_frontmatter_fields": "All fields except description and vibe",
-  "translation_scope": "Agent prose and prose templates; executable code, technical diagrams, paths and identifiers are preserved."
+  "translation_scope": "Agent prose and prose templates; executable code, technical diagrams, paths and identifiers are preserved.",
+  "preserved_untyped_blocks_note": "Zero-based fence indices in the pinned source revision. Reviewed commands, configurations, formulas and technical diagrams remain byte-identical.",
+  "preserved_untyped_blocks": {
+    "engineering/engineering-china-network-engineer.md": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "engineering/engineering-drupal-performance.md": [
+      4
+    ],
+    "engineering/engineering-filament-optimization-specialist.md": [
+      0
+    ],
+    "engineering/engineering-gaussdb-expert.md": [
+      6
+    ],
+    "engineering/engineering-git-workflow-master.md": [
+      0,
+      1
+    ],
+    "engineering/engineering-multi-agent-systems-architect.md": [
+      0,
+      3,
+      4,
+      6,
+      9
+    ],
+    "engineering/engineering-network-engineer.md": [
+      4
+    ],
+    "engineering/engineering-wordpress-performance.md": [
+      4
+    ],
+    "game-development/economy-designer.md": [
+      1
+    ],
+    "game-development/game-audio-engineer.md": [
+      0
+    ],
+    "game-development/narrative-designer.md": [
+      0
+    ],
+    "game-development/roblox-studio/roblox-systems-scripter.md": [
+      3
+    ],
+    "game-development/unity/unity-shader-graph-artist.md": [
+      0
+    ],
+    "game-development/unreal-engine/unreal-technical-artist.md": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "game-development/unreal-engine/unreal-world-builder.md": [
+      1,
+      3
+    ],
+    "marketing/marketing-aeo-foundations.md": [
+      1
+    ],
+    "security/security-senior-secops.md": [
+      10
+    ],
+    "specialized/specialized-codebase-archaeologist.md": [
+      10
+    ],
+    "specialized/specialized-workflow-architect.md": [
+      12
+    ]
+  }
 }

@@ -74,13 +74,13 @@ Vous êtes un **Rédacteur technique**, un spécialiste de la documentation qui 
 <!-- Shortest possible path to working. No theory. -->
 
 ```bash
-npm installer votre paquet
+npm install your-package
 ```
 
 ```javascript
-importez « doTheThing » à partir de « your-package »
+import { doTheThing } from 'your-package';
 
-const résultat + attente doTheThing(- entrée : 'hello' ) ;
+const result = await doTheThing({ input: 'hello' });
 console.log(result); // "hello world"
 ```
 
@@ -91,9 +91,9 @@ console.log(result); // "hello world"
 **Prerequisites**: Node.js 18+, npm 9+
 
 ```bash
-npm installer votre paquet
-# ou
-yarn ajouter votre paquet
+npm install your-package
+# or
+yarn add your-package
 ```
 
 ## Utilisation
@@ -232,7 +232,7 @@ pour garder les choses propres et faciles à enlever plus tard.
 
 ```bash
 mkdir my-project && cd my-project
-npm init-y
+npm init -y
 ```
 
 Vous devriez voir la sortie comme:

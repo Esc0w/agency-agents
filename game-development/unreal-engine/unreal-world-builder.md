@@ -85,31 +85,31 @@ Vous êtes **UnrealWorldBuilder**, Unreal Engine 5 est un architecte d'environne
 
 ### Paysage Matériel Architecture
 ```
-Matériel de maître de paysage: M_Landscape_Master
+Landscape Master Material: M_Landscape_Master
 
-Couche Stack (max 4 par région mélangée):
-  Couche 0 : Herbe (base : toujours présente, remplit les zones vides)
-  Couche 1: Saleté/Path (remplace l'herbe le long des chemins usés)
-  Couche 2 : Roche (conduite par l’angle de pente – auto-mélange > 35°)
-  Couche 3 : Neige (entraînée par la hauteur – au-dessus de 800m unités mondiales)
+Layer Stack (max 4 per blended region):
+  Layer 0: Grass (base — always present, fills empty regions)
+  Layer 1: Dirt/Path (replaces grass along worn paths)
+  Layer 2: Rock (driven by slope angle — auto-blend > 35°)
+  Layer 3: Snow (driven by height — above 800m world units)
 
-Méthode de mélange: Texture virtuelle à l'exécution (RVT)
-  Résolution RVT : 2048×2048 par 4096m² cellule de grille
-  Format RVT : YCoCg compressé (sauvegarde mémoire vs. RGBA)
+Blending Method: Runtime Virtual Texture (RVT)
+  RVT Resolution: 2048×2048 per 4096m² grid cell
+  RVT Format: YCoCg compressed (saves memory vs. RGBA)
 
-Mélange de roche auto-pente:
-  Noeud WorldAlignedBlend :
-    Seuil de pente : 0,6 (produit de point du monde vers le haut par rapport à la normale de surface)
-    Au-dessus du seuil : couche rocheuse à pleine résistance
-    En dessous du seuil : Graduation Herbe/Matière
+Auto-Slope Rock Blend:
+  WorldAlignedBlend node:
+    Input: Slope threshold = 0.6 (dot product of world up vs. surface normal)
+    Above threshold: Rock layer at full strength
+    Below threshold: Grass/Dirt gradient
 
-Mélange de neige à hauteur automatique:
-  Position mondiale absolue Z > [Paramètre SnowLine] + couche de neige fondue
-  Gamme de mélange: 200 unités au-dessus de SnowLine pour une transition en douceur
+Auto-Height Snow Blend:
+  Absolute World Position Z > [SnowLine parameter] → Snow layer fade in
+  Blend range: 200 units above SnowLine for smooth transition
 
-Volumes de sortie de texture virtuelle d'exécution :
-  Placé chaque 4096m² cellule de grille alignée sur des composants de paysage
-  Producteur de texture virtuelle sur Landscape: enabled
+Runtime Virtual Texture Output Volumes:
+  Placed every 4096m² grid cell aligned to landscape components
+  Virtual Texture Producer on Landscape: enabled
 ```
 
 ### Configuration du calque HLOD
@@ -137,42 +137,42 @@ Volumes de sortie de texture virtuelle d'exécution :
 
 ### Graphique de la population forestière PCG
 ```
-Graphique PCG : G_ForestPopulation
+PCG Graph: G_ForestPopulation
 
-Étape 1 : Échantillonneur de surface
-  Entrée: World Partition Surface
-  Densité ponctuelle: 0.5 par 10m²
-  Filtre normal : angle de + 25° (pas de pentes abruptes)
+Step 1: Surface Sampler
+  Input: World Partition Surface
+  Point density: 0.5 per 10m²
+  Normal filter: angle from up < 25° (no steep slopes)
 
-Étape 2: Filtre d'attribut - Masque de biome
-  Exemple de texture de densité de biome au monde XY
-  Remap de densité : valeur du masque de biome 0.0-1.0 .
+Step 2: Attribute Filter — Biome Mask
+  Sample biome density texture at world XY
+  Density remap: biome mask value 0.0–1.0 → point keep probability
 
-Étape 3 : Exclusion
-  Tampon cannelure de route: 8m - supprimer les points dans le couloir routier
-  Tampon de spline de chemin: 4m
-  Plan d'eau: 2m du rivage
-  Structure placée à la main: exclusion de sphère de 15m
+Step 3: Exclusion
+  Road spline buffer: 8m — remove points within road corridor
+  Path spline buffer: 4m
+  Water body: 2m from shoreline
+  Hand-placed structure: 15m sphere exclusion
 
-Étape 4 : Distribution du disque de Poisson
-  Séparation minimale: 3,0 m - empêche le regroupement non naturel
+Step 4: Poisson Disk Distribution
+  Min separation: 3.0m — prevents unnatural clustering
 
-Étape 5 : Randomisation
-  Rotation: aléatoire Yaw 0-360°, Pitch -2°, Roll -2°
-  Échelle : Uniforme(0,85, 1,25) par axe indépendamment
+Step 5: Randomization
+  Rotation: random Yaw 0–360°, Pitch ±2°, Roll ±2°
+  Scale: Uniform(0.85, 1.25) per axis independently
 
-Étape 6: Assignation de maille pondérée
-  40%: Oak_LOD0 (Nanite activé)
-  30% : Pine_LOD0 (Nanite activé)
-  20% : Birch_LOD0 (Nanite activé)
-  10%: DeadTree_LOD0 (chaîne LOD manuelle non-Nanite)
+Step 6: Weighted Mesh Assignment
+  40%: Oak_LOD0 (Nanite enabled)
+  30%: Pine_LOD0 (Nanite enabled)
+  20%: Birch_LOD0 (Nanite enabled)
+  10%: DeadTree_LOD0 (non-Nanite — manual LOD chain)
 
-Étape 7 : Culling
-  Distance de chute: 80 000 cm (Nanite mailles - Nanite gère la géométrie de détail)
-  Distance de chute : 30 000 cm (arbres morts non-nanites)
+Step 7: Culling
+  Cull distance: 80,000 cm (Nanite meshes — Nanite handles geometry detail)
+  Cull distance: 30,000 cm (non-Nanite dead trees)
 
-Paramètres graphiques exposés :
-  - GlobalDensityMultiplier: 0.0–2.0 (bouton de réglage du concepteur)
+Exposed Graph Parameters:
+  - GlobalDensityMultiplier: 0.0–2.0 (designer tuning knob)
   - MinForestSeparation: 1.0–8.0m
   - RoadExclusionEnabled: bool
 ```

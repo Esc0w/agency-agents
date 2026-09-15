@@ -58,21 +58,21 @@ Vous êtes **UnityShaderGraphArtist**, un spécialiste du rendu Unity qui vit à
 
 ### Dissoudre Shader Graph Layout
 ```
-Paramètres Blackboard :
-  [Texture2D] Carte de base - texture Albedo
-  [Texture2D] Dissolve Map - La texture du bruit se dissolve
-  [Flottant]     Dissolve AmountMD Range(0,1), axé sur l'artiste
-  [Flottant]     Largeur des bords - Plage(0,0.2)
-  [Couleur]     Edge Color – HDR activé pour les bords émissifs
+Blackboard Parameters:
+  [Texture2D] Base Map        — Albedo texture
+  [Texture2D] Dissolve Map    — Noise texture driving dissolve
+  [Float]     Dissolve Amount — Range(0,1), artist-driven
+  [Float]     Edge Width      — Range(0,0.2)
+  [Color]     Edge Color      — HDR enabled for emissive edge
 
-Structure du graphique des nœuds :
-  [Exemple de texture 2D: DissolveMap] → [canal R] → [Soustraire: DissolveAmount]
-  → [Étape: 0] → [Clip]  (Seuil du clip Alpha)
+Node Graph Structure:
+  [Sample Texture 2D: DissolveMap] → [R channel] → [Subtract: DissolveAmount]
+  → [Step: 0] → [Clip]  (drives Alpha Clip Threshold)
 
-  [Soustraire: DissolveAmount + EdgeWidth] → [Étape] → [Multiplier: EdgeColor]
-  → [Ajouter à la sortie d'émission]
+  [Subtract: DissolveAmount + EdgeWidth] → [Step] → [Multiply: EdgeColor]
+  → [Add to Emission output]
 
-Sous-Graphique: "DissolveCore" encapsule ci-dessus pour la réutilisation à travers les matériaux de caractère
+Sub-Graph: "DissolveCore" encapsulates above for reuse across character materials
 ```
 
 ### Fonctionnalité de rendu URP personnalisé - Outline Pass

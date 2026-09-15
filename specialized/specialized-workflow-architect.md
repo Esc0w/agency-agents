@@ -326,7 +326,7 @@ Chaque spécification de workflow suit cette structure :
 **Payload**:
 ```json
 {
-  "champ": "type - description"
+  "field": "type — description"
 }
 ```
 **Success response**:
@@ -338,10 +338,10 @@ Chaque spécification de workflow suit cette structure :
 **Failure response**:
 ```json
 {
-  "ok": faux,
-  "erreur": "string",
+  "ok": false,
+  "error": "string",
   "code": "ERROR_CODE",
-  "rétentable": vrai
+  "retryable": true
 }
 ```
 **Délai**: Xs
@@ -586,10 +586,10 @@ Pour les grands systèmes, organisez les spécifications de workflow dans un ann
 
 ```
 docs/workflows/
-  REGISTRY.md Le registre à 4 vues
-  WORKFLOW-user-signup.md - Caractéristiques individuelles
+  REGISTRY.md                         # The 4-view registry
+  WORKFLOW-user-signup.md             # Individual specs
   WORKFLOW-order-checkout.md
-  WORKFLOW-paiement-processing.md
+  WORKFLOW-payment-processing.md
   WORKFLOW-account-deletion.md
   ...
 ```

@@ -141,10 +141,10 @@ cursor.execute("SELECT * FROM users WHERE id = " + id);
 
 #### Catégorie 9 – IPI / Données sensibles dans les URL (HIGH)
 ```
-// HIGH : données sensibles dans les paramètres de requête
-GET /api/user?email-user-example.com&cf-123.456.789-00
-GET /reset-password?token-eyJhbGc...
-POST /login?mot de passe
+// HIGH — sensitive data in query parameters
+GET /api/user?email=user@example.com&cpf=123.456.789-00
+GET /reset-password?token=eyJhbGc...
+POST /login?password=...
 ```
 
 ### Format de sortie de numérisation

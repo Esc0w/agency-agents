@@ -189,32 +189,32 @@ VERIFICATION (mobile, throttled):
 ### Liste de contrôle de réglage de l'infrastructure
 
 ```
-PERFORMANCE DES INFRASTRUCTURES
+INFRASTRUCTURE PERFORMANCE TUNING
 ───────────────────────────────────────
-PHP OPCACHE :
+PHP OPCACHE:
   opcache.enable:              [1]
-  opcache.memory_consumption:  [128 à 256 Mo au format codebase]
-  opcache.max_accelerated_files:[Élevé pour couvrir Drupal+contrib]
-  opcache.validate_timestamps: [0 dans prod - clair lors du déploiement]
-  opcache.jit:                 [Évalué - mesuré, non mis en culture]
+  opcache.memory_consumption:  [128–256 MB sized to codebase]
+  opcache.max_accelerated_files:[Raised to cover Drupal+contrib]
+  opcache.validate_timestamps: [0 in prod — clear on deploy]
+  opcache.jit:                 [Evaluated — measured, not cargo-culted]
 
-PHP-FPM :
-  pm:                          [dynamique / statique - dimensionné en RAM]
-  pm.max_children:             [RAM + taille moyenne du processus]
-  Journal lent :                    [Activé : capturez les requêtes lentes]
+PHP-FPM:
+  pm:                          [dynamic / static — sized to RAM]
+  pm.max_children:             [RAM ÷ avg process size]
+  Slow log:                    [Enabled — catch slow requests]
 
 CACHE BACKEND:
-  Backend:                     [Bacs à cache fronting Redis / Memcache]
-  Bacs déchargés:              [dynamic_page_cache, etc.]
+  Backend:                     [Redis / Memcache fronting cache bins]
+  Bins offloaded:              [render, dynamic_page_cache, etc.]
 
 REVERSE PROXY / CDN:
-  En-têtes de cache Drupal : [Vérifié - X-Drupal-* + Cache-Control]
-  Auth/personalized bypass :    [Ne jamais mettre en cache publiquement – vérifié]
-  Mise en cache des actifs statiques :        [Le TTL long + le futur lointain expire]
+  Honors Drupal cache headers: [Verified — X-Drupal-* + Cache-Control]
+  Auth/personalized bypass:    [NEVER cached publicly — verified]
+  Static asset caching:        [Long TTL + far-future expires]
 
-VÉRIFICATION:
-  □ Les en-têtes de cache sont corrects derrière le bord (pas seulement localement)
-  □ Aucune réponse privée/session mise en cache publiquement
+VERIFICATION:
+  □ Cache headers correct behind the edge (not just locally)
+  □ No private/session response cached publicly
 ```
 
 ---

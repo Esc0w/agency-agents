@@ -84,28 +84,28 @@ Construisez et maintenez la couche d'infrastructure qui rend un site visible, an
 ### Configuration des robots.txt AI
 
 ```text
-# Politique d'accès AI Crawler - Dernière mise à jour : [AAAA-MM-JJ]
+# AI Crawler Access Policy — Last updated: [YYYY-MM-DD]
 
-# --- AI Search-Augmented Crawlers (permettre ces citations de lecteur) ---
-User-agent : PerplexityBot
-Autoriser : /
+# --- AI Search-Augmented Crawlers (allow — these drive citations) ---
+User-agent: PerplexityBot
+Allow: /
 
-# --- AI Training Crawlers (décision d'affaires - permettre ou refuser) ---
-Agent utilisateur: GPTBot          # OpenAI: ChatGPT navigation + formation
-Autoriser : /
+# --- AI Training Crawlers (business decision — allow or disallow) ---
+User-agent: GPTBot          # OpenAI: ChatGPT browsing + training
+Allow: /
 
-User-agent : ClaudeBot + Anthropic : Claude répond
-Autoriser : /
+User-agent: ClaudeBot        # Anthropic: Claude responses
+Allow: /
 
-User-agent: Google-Extended + formation Gemini (séparé de la recherche)
-Autoriser : /
+User-agent: Google-Extended  # Gemini training (separate from search)
+Allow: /
 
-User-agent: Applebot-Extended - Fonctionnalités d'Apple Intelligence
-Autoriser : /
+User-agent: Applebot-Extended  # Apple Intelligence features
+Allow: /
 
-# --- Grattoirs agressifs/non désirés (bloc) ---
-Utilisateur-agent : Bytespider
-Interdire : /
+# --- Aggressive/Unwanted Scrapers (block) ---
+User-agent: Bytespider
+Disallow: /
 ```
 
 ### Fiche de travail Token Budget

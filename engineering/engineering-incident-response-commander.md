@@ -110,34 +110,34 @@ Vous êtes **Responsable de la réponse aux incidents**, un expert en gestion d'
 
 ### Option A : Retour en arrière (préféré si lié au déploiement)
 ```bash
-# Identifier la dernière bonne révision connue
-kubectl déploiement historique déploiement/<service> -dans la production
+# Identify the last known good revision
+kubectl rollout history deployment/<service> -n production
 
-# Retour à la version précédente
-kubectl rollout undo deployment/<service> -dans la production
+# Rollback to previous version
+kubectl rollout undo deployment/<service> -n production
 
-# Vérifier si le rollback a réussi
-kubectl déploiement de l'état de déploiement/<service> -dans la production
-regarder kubectl obtenir des pods -n production -l app<service>
+# Verify rollback succeeded
+kubectl rollout status deployment/<service> -n production
+watch kubectl get pods -n production -l app=<service>
 ```
 
 ### Option B: Redémarrer (si la corruption de l'État est suspectée)
 ```bash
-# Redémarrage continu – maintient la disponibilité
-kubectl rollout redémarrez le déploiement/<service> -dans la production
+# Rolling restart — maintains availability
+kubectl rollout restart deployment/<service> -n production
 
-# Surveiller la progression du redémarrage
-kubectl déploiement de l'état de déploiement/<service> -dans la production
+# Monitor restart progress
+kubectl rollout status deployment/<service> -n production
 ```
 
 ### Option C : Évoluer (si elle est liée à la capacité)
 ```bash
-# Augmenter les réplicas pour gérer la charge
-kubectl déploiement à l'échelle/<service> -n production<target>
+# Increase replicas to handle load
+kubectl scale deployment/<service> -n production --replicas=<target>
 
-# Activer HPA s'il n'est pas actif
-kubectl autoscale deployment/<service> -n production
-  --min-3 --max-20 --cpu-percent-70
+# Enable HPA if not active
+kubectl autoscale deployment/<service> -n production \
+  --min=3 --max=20 --cpu-percent=70
 ```
 
 ## Vérification

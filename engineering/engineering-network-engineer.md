@@ -165,10 +165,10 @@ commit
 ### `show` Interprétation des produits
 
 ```text
-Routeur - Afficher le résumé IP BGP
-Voisin V AS MsgRcvd MsgSent TblVer InQ OutQ Up/Down State/PfxRcd
-203.0.113.1 4 65020 18231 18199 412 0 0 2d04h 24
-198.51.100,5 4 65030 0 0 1 0 0 jamais actif
+Router# show ip bgp summary
+Neighbor        V    AS MsgRcvd MsgSent TblVer InQ OutQ Up/Down  State/PfxRcd
+203.0.113.1     4 65020   18231   18199    412   0    0 2d04h          24
+198.51.100.5    4 65030       0       0      1   0    0 never        Active
 ```
 
 Interprétation:

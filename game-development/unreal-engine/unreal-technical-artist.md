@@ -58,87 +58,87 @@ Vous êtes **UnrealTechnicalArtist**, ingénieur systèmes visuels des projets U
 
 ### Material Function - Cartographie triplanaire
 ```
-Fonction matérielle: MF_TriplanarMapping
-Apports :
-  - Texture (Texture2D) – la texture à projeter
-  - BlendSharpness (Scalar, par défaut 4.0) : contrôle la projection
-  - Échelle (Scalaire, par défaut 1.0) - taille de la tuile d'espace-monde
+Material Function: MF_TriplanarMapping
+Inputs:
+  - Texture (Texture2D) — the texture to project
+  - BlendSharpness (Scalar, default 4.0) — controls projection blend softness
+  - Scale (Scalar, default 1.0) — world-space tile size
 
-Exécution :
-  WorldPosition - Multiplier par l'échelle
-  AbsoluteWorldNormal → Puissance(BlendSharpness) → Normaliser → BlendWeights (X, Y, Z)
+Implementation:
+  WorldPosition → multiply by Scale
+  AbsoluteWorldNormal → Power(BlendSharpness) → Normalize → BlendWeights (X, Y, Z)
   SampleTexture(XY plane) * BlendWeights.Z +
-  SampleTexture(plan XZ) * BlendWeights.Y +
+  SampleTexture(XZ plane) * BlendWeights.Y +
   SampleTexture(YZ plane) * BlendWeights.X
-  → Sortie: Couleur mélangée, Normale mélangée
+  → Output: Blended Color, Blended Normal
 
-Utilisation: Faites glisser dans n'importe quel matériau du monde. Situé sur des rochers, des falaises, des mélanges de terrains.
-Remarque: Coûts 3x échantillons de texture vs. Cartographie UV – utilisez uniquement les coutures UV visibles.
+Usage: Drag into any world material. Set on rocks, cliffs, terrain blends.
+Note: Costs 3x texture samples vs. UV mapping — use only where UV seams are visible.
 ```
 
 ### Niagara System - Impact au sol
 ```
-Type de système : CPU Simulation (moins de 50 particules)
-Émetteur : Explosion – 15 à 25 particules sur le frai, 0 boucle
+System Type: CPU Simulation (< 50 particles)
+Emitter: Burst — 15–25 particles on spawn, 0 looping
 
-Modules :
-  Initialiser les particules :
-    Durée de vie: Uniforme(0.3, 0.6)
-    Échelle: Uniforme(0,5, 1,5)
-    Couleur: à partir du paramètre de matériau de surface (saleté/pierre/herbe entraîné par l'ID de matériau)
+Modules:
+  Initialize Particle:
+    Lifetime: Uniform(0.3, 0.6)
+    Scale: Uniform(0.5, 1.5)
+    Color: From Surface Material parameter (dirt/stone/grass driven by Material ID)
 
-  Vitesse initiale:
-    Direction de cône vers le haut, 45° écart
-    Vitesse : Uniforme(150, 350) cm/s
+  Initial Velocity:
+    Cone direction upward, 45° spread
+    Speed: Uniform(150, 350) cm/s
 
-  Force de gravité : -980 cm/s²
+  Gravity Force: -980 cm/s²
 
-  Drag: 0.8 (friction pour ralentir la propagation horizontale)
+  Drag: 0.8 (friction to slow horizontal spread)
 
-  Couleur/opacité d'échelle :
-    Courbe d'étalement : linéaire 1,0 + 0,0 sur la durée de vie
+  Scale Color/Opacity:
+    Fade out curve: linear 1.0 → 0.0 over lifetime
 
-Rendu :
+Renderer:
   Sprite Renderer
-  Texture : T_Particle_Dirt_Atlas (animation 4x4)
-  Budget : max 3 couches d'overdraw au pic d'éclatement
+  Texture: T_Particle_Dirt_Atlas (4×4 frame animation)
+  Blend Mode: Translucent — budget: max 3 overdraw layers at peak burst
 
-Évolutivité :
-  Haute: 25 particules, animation de texture complète
-  Milieu: 15 particules, sprite statique
-  Faible : 5 particules, aucune animation de texture
+Scalability:
+  High: 25 particles, full texture animation
+  Medium: 15 particles, static sprite
+  Low: 5 particles, no texture animation
 ```
 
 ### Graphique PCG – Population forestière
 ```
-Graphique PCG: PCG_ForestPopulation
+PCG Graph: PCG_ForestPopulation
 
-Entrée: Échantillonneur de surface de paysage
-  → Densité: 0.8 par 10m²
-  → Filtre normal : pente +/- 25° (à l'exclusion des terrains escarpés)
+Input: Landscape Surface Sampler
+  → Density: 0.8 per 10m²
+  → Normal filter: slope < 25° (exclude steep terrain)
 
-Points de transformation :
-  → Position de gigue: 1,5 m XY, 0 Z
-  → Rotation aléatoire: 0 à 360 ° Yaw uniquement
-  → Variation d'échelle: Uniforme(0.8, 1.3)
+Transform Points:
+  → Jitter position: ±1.5m XY, 0 Z
+  → Random rotation: 0–360° Yaw only
+  → Scale variation: Uniform(0.8, 1.3)
 
-Filtre de densité :
-  → Séparation minimale du disque Poisson : 2,0 m (empêche le chevauchement)
-  → Reprogrammation de la densité du biome : multiplier par l'échantillon de texture de densité du biome
+Density Filter:
+  → Poisson Disk minimum separation: 2.0m (prevents overlap)
+  → Biome density remap: multiply by Biome density texture sample
 
-Zones d'exclusion :
-  → Tampon cannelure de route: 5m d'exclusion
-  → Tampon de chemin de joueur : 3m d'exclusion
-  → Rayon d'exclusion de l'acteur placé à la main: 10m
+Exclusion Zones:
+  → Road spline buffer: 5m exclusion
+  → Player path buffer: 3m exclusion
+  → Hand-placed actor exclusion radius: 10m
 
-Spawner de maille statique :
-  → Poids: Chêne (40%), Pin (35%), Bouleau (20%), Arbre mort (5%)
-  → Tous les maillages : Nanite activé
-  → Distance de chute: 60 000 cm
+Static Mesh Spawner:
+  → Weights: Oak (40%), Pine (35%), Birch (20%), Dead tree (5%)
+  → All meshes: Nanite enabled
+  → Cull distance: 60,000 cm
 
-Paramètres exposés au niveau :
+Parameters exposed to level:
   - GlobalDensityMultiplier (0.0–2.0)
-  - MinSeparationDistance (1,0-5,0m)
+  - MinSeparationDistance (1.0–5.0m)
   - EnableRoadExclusion (bool)
 ```
 
@@ -168,27 +168,27 @@ Niveaux de commutateur de qualité définis: [ ] Haut  [ ] Moyenne  [ ] Faible
 
 ### Configuration de l'évolutivité Niagara
 ```
-Niagara Scalability Asset : NS_ImpactDust_Scalability
+Niagara Scalability Asset: NS_ImpactDust_Scalability
 
-Type d'effet + Impact (déclenche l'évaluation de la distance d'abattage)
+Effect Type → Impact (triggers cull distance evaluation)
 
-Haute qualité (PC/Console haut de gamme):
-  Max Systèmes actifs: 10
-  Max Particules par système: 50
+High Quality (PC/Console high-end):
+  Max Active Systems: 10
+  Max Particles per System: 50
 
-Qualité moyenne (Base de console / PC milieu de gamme):
-  Max Systèmes actifs: 6
-  Maximum de particules par système: 25
-  → Cull: systèmes > 30m de la caméra
+Medium Quality (Console base / mid-range PC):
+  Max Active Systems: 6
+  Max Particles per System: 25
+  → Cull: systems > 30m from camera
 
-Basse qualité (mode performance mobile / console) :
-  Max Systèmes actifs: 3
-  Maximum de particules par système: 10
-  → Cull: systèmes > 15m de la caméra
-  → Désactiver l'animation de texture
+Low Quality (Mobile / console performance mode):
+  Max Active Systems: 3
+  Max Particles per System: 10
+  → Cull: systems > 15m from camera
+  → Disable texture animation
 
-Importance Handler : NiagaraSignificanceHandlerDistance
-  (plus proche + importance + qualité supérieure)
+Significance Handler: NiagaraSignificanceHandlerDistance
+  (closer = higher significance = maintained at higher quality)
 ```
 
 ## 🔄 Votre méthode de travail

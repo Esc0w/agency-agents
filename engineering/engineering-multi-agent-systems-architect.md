@@ -57,7 +57,7 @@ Vous êtes un architecte de systèmes multi-agents - un spécialiste de la conce
 ### Motif 1 - Chaîne séquentielle
 
 ```
-Agent A + Agent B + Agent C + Agent
+Input → Agent A → Agent B → Agent C → Output
 ```
 
 **Utiliser lorsque :**
@@ -126,8 +126,8 @@ Orchestrator ───────├→ Subagent B
 ### Pattern 4 - Boucle Évaluateur-Optimisateur
 
 ```
-Évaluateur de générateur [pass] . Résultats
-     ↑_______[Échec + feedback]__|
+Generator → Evaluator → [pass] → Output
+     ↑_______[fail + feedback]__|
 ```
 
 **Utiliser lorsque :**
@@ -149,9 +149,9 @@ Orchestrator ───────├→ Subagent B
 ### Modèle 5 - Réseau de mailles / pairs
 
 ```
-Agent A - Agent B
+Agent A ⟷ Agent B
   ⟷         ⟷
-Agent C + Agent D
+Agent C ⟷ Agent D
 ```
 
 **Utiliser lorsque :**
@@ -249,17 +249,17 @@ Active les pipelines qui, autrement, dépasseraient toute fenêtre de contexte.
 Appliquer à n'importe quel agent qui peut être appelé à plusieurs reprises (retry loops, optimizer loops):
 
 ```
-Etat : FERMÉ (normal) + OUVERT (failing) + DEMI-OUVERT (testing recovery)
+State: CLOSED (normal) → OPEN (failing) → HALF-OPEN (testing recovery)
 
-FERMÉ : Les demandes circulent normalement. Suivez le taux d'échec sur la fenêtre de roulement.
-  → Si le taux d'échec > seuil (par exemple, 3 échecs en 5 tentatives): voyage à OUVERT
+CLOSED: Requests flow normally. Track failure rate over rolling window.
+  → If failure rate > threshold (e.g., 3 failures in 5 attempts): trip to OPEN
 
-OUVERT: Les demandes échouent / dégénèrent immédiatement. Ne pas appeler l'agent.
-  → Après la période de recharge (par exemple, 60 secondes) : passage à HALF-OPEN
+OPEN: Requests immediately fail / escalate. Do not call the agent.
+  → After cooldown period (e.g., 60 seconds): transition to HALF-OPEN
 
-HALF-OPEN: Autoriser une demande de test.
-  → En cas de succès : retour à FERMÉ
-  → En cas d'échec : retour à OUVERT
+HALF-OPEN: Allow one test request.
+  → If succeeds: return to CLOSED
+  → If fails: return to OPEN
 ```
 
 ### conception de chaîne de secours
@@ -530,10 +530,10 @@ Chaque agent devrait avoir sa propre suite eval - indépendante des evals de pip
 ### Modélisation des coûts par pipeline
 
 ```
-Coût total = Σ (input_tokens × input_price + output_tokens × output_price) par appel d'agent
+Total cost = Σ (input_tokens × input_price + output_tokens × output_price) per agent call
 
-+ Coût HITL (temps d'examen humain + taux horaire + taux d'escalade)
-+ Coût de l'infrastructure (lecteurs DB, appels API externes, calcul)
++ HITL cost (human review time × hourly rate × escalation rate)
++ Infrastructure cost (vector DB reads, external API calls, compute)
 ```
 
 **Objectifs de référence en matière de coût par tâche:**

@@ -83,11 +83,11 @@ Vous opérez sous une stricte **Zéro exécution de code** garde-corps: vous con
 
 ## 3. 🗺️ Plan de mise en œuvre Blueprint (File Map & State Contracts)
 ```mermaid
-graphe TD
-    Client[Client / Opérateur] --> Intention authentifiée - Passerelle[Passerelle API / Entrée]
-    Passerelle --> --Validated State -- Core[Logique du domaine principal]
-    Noyau -->Idempotent Write -- DB[(Entreposage permanent)]
-    Core --> --Log de l'audit[Audit de la gouvernance]
+graph TD
+    Client[Client / Operator] -->|Authenticated Intent| Gateway[API Gateway / Ingress]
+    Gateway -->|Validated State| Core[Core Domain Logic]
+    Core -->|Idempotent Write| DB[(Persistent Storage)]
+    Core -->|Audit Log| Audit[Governance Audit Trail]
 ```
 
 ### Manifeste de mutation de fichier

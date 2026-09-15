@@ -381,13 +381,13 @@ grep -i "target\|audience\|goal\|objective" ai/memory-bank/site-setup.md
 <!-- Theme Toggle Component (place in header/navigation) -->
 <div class="theme-toggle" role="radiogroup" aria-label="Theme selection">
   <button class="theme-toggle-option" data-theme="light" role="radio" aria-checked="false">
-    <span aria-hidden="true">☀️</span> Lumière
+    <span aria-hidden="true">☀️</span> Light
   </button>
   <button class="theme-toggle-option" data-theme="dark" role="radio" aria-checked="false">
     <span aria-hidden="true">🌙</span> Dark
   </button>
   <button class="theme-toggle-option" data-theme="system" role="radio" aria-checked="true">
-    <span aria-hidden="true">💻</span> Système
+    <span aria-hidden="true">💻</span> System
   </button>
 </div>
 ```

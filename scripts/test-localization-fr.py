@@ -56,6 +56,21 @@ def structure(body):
     return result
 
 
+def explicit_code(body):
+    # Some upstream documentation templates contain same-length nested fences.
+    # Check every explicit language opener independently, including those inside
+    # a Markdown template, so their executable examples cannot be mistranslated.
+    lines = body.splitlines()
+    result = []
+    for i, line in enumerate(lines):
+        match = re.match(r"^\s*(`{3,}|~{3,})(\S+)\s*$", line)
+        if match and match[2].lower() not in ("md", "markdown", "text", "plaintext"):
+            end = next((j for j in range(i + 1, len(lines)) if lines[j].strip() == match[1]), None)
+            if end is not None:
+                result.append((match[2], lines[i + 1:end]))
+    return result
+
+
 def check_agent(path):
     source = git("show", f"{CONFIG['source_commit']}:{path}")
     data = (ROOT / path).read_bytes()
@@ -71,11 +86,13 @@ def check_agent(path):
     assert body.startswith("## Langue de travail\n\nRépondez en français par défaut"), "missing French default"
     body = re.sub(r"^## Langue de travail\n\n[^\n]+\n+", "", body, count=1)
     assert structure(old_body) == structure(body), "Markdown row structure changed"
+    assert explicit_code(old_body) == explicit_code(body), "nested executable example changed"
     old_blocks, new_blocks = fences(old_body), fences(body)
     assert len(old_blocks) == len(new_blocks), "fenced block count changed"
     for index, ((lang, old), (new_lang, new)) in enumerate(zip(old_blocks, new_blocks), 1):
         assert lang == new_lang, f"fence language changed in block {index}"
-        if lang.lower() not in ("", "md", "markdown", "text", "plaintext"):
+        if (lang.lower() not in ("", "md", "markdown", "text", "plaintext")
+                or index - 1 in CONFIG.get("preserved_untyped_blocks", {}).get(path, [])):
             assert old == new, f"executable code changed in block {index} ({lang})"
     assert re.findall(r"`[^`\n]+`", old_body) == re.findall(r"`[^`\n]+`", body), "inline code changed"
     links = r"https?://[^\s<>\])]+"

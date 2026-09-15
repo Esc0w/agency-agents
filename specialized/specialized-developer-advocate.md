@@ -191,7 +191,7 @@ Je peux reproduire ceci sur [version X]. La cause profonde est [brève explicati
 
 **Solution (disponible dès maintenant)**:
 ```code
-code de contournement ici
+workaround code here
 ```
 
 **Fixer**: Ceci est suivi dans .[numéro-numéro]. J'ai bougé sa priorité compte tenu du nombre

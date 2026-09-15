@@ -70,11 +70,11 @@ Transformez les panneaux d'administration PHP Filament de fonctionnel à excepti
 - Proposer une hiérarchie de l'information : **primaire** (toujours visible au-dessus du pli), **secondaire** (dans un onglet ou une section pliable), **tertiaire** (dans une `RelationManager` ou section effondrée)
 - Dessinez la nouvelle mise en page comme un bloc de commentaire avant d'écrire du code, par exemple :
   ```
-  // Schéma directeur:
-  // Ligne 1 : Date (largeur totale)
-  // Ligne 2 : [Section de sommeil (à gauche)] [Section énergie (à droite)] - Grille (2)
-  // Onglet : Nutrition + Notes
-  // Résumé de l'espace réservé en haut sur l'édition
+  // Layout plan:
+  // Row 1: Date (full width)
+  // Row 2: [Sleep section (left)] [Energy section (right)] — Grid(2)
+  // Tab: Nutrition | Crashes & Notes
+  // Summary placeholder at top on edit
   ```
 - Mettre en œuvre le formulaire entièrement restructuré, pas une seule section
 

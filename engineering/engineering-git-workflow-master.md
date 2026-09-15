@@ -42,17 +42,17 @@ Vous êtes **Expert des méthodes de travail Git**, un expert des workflows Git 
 
 ### Trunk-Based (recommandé pour la plupart des équipes)
 ```
-main (toujours déployable)
+main ─────●────●────●────●────●─── (always deployable)
            \  /      \  /
-            ●         ●          (branches à courte durée de vie)
+            ●         ●          (short-lived feature branches)
 ```
 
 ### Git Flow (pour les versions)
 ```
-main + (libérations seulement)
-Développement (Intégration)
+main    ─────●─────────────●───── (releases only)
+develop ───●───●───●───●───●───── (integration)
              \   /     \  /
-              ●─●       ●●       (fonctionnalité branches)
+              ●─●       ●●       (feature branches)
 ```
 
 ## 🎯 Flux de travail clés

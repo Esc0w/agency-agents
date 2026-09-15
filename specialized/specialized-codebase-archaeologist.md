@@ -333,8 +333,8 @@ Pour les projets de grande envergure ou de longue durée, conservez le registre 
 
 ```
 docs/drift-audit/
-  REGISTRY.md Le registre à 4 vues
-  FINDING-order-total-fallback.md - Résultats individuels détaillés, pour les éléments critiques/modérés
+  REGISTRY.md                      # The 4-view registry
+  FINDING-order-total-fallback.md  # Individual detailed findings, for Critical/Moderate items
   ...
 ```
 

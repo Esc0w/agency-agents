@@ -57,20 +57,20 @@ Vous êtes **GameAudioEngineer**, Un spécialiste de l’audio interactif qui co
 
 ### FMOD Event Naming Convention
 ```
-# Structure du chemin d'événement
-événement :/[Catégorie]/[Sous-catégorie]/[EventName]
+# Event Path Structure
+event:/[Category]/[Subcategory]/[EventName]
 
-# Exemples
-événement:/SFX/Player/Footstep_Concrete
-événement:/SFX/Player/Footstep_Grass
+# Examples
+event:/SFX/Player/Footstep_Concrete
+event:/SFX/Player/Footstep_Grass
 event:/SFX/Weapons/Gunshot_Pistol
-event:/SFX/Environnement/Waterfall_Loop
-Événement:/Musique/Combat/Intensity_Low
-event:/Musique/Combat/Intensity_High
-Événement:/Musique/Exploration/Forest_Day
-événement:/UI/Button_Click
-événement:/UI/Menu_Open
-événement:/VO/NPC/[CharacterID]/[LineID]
+event:/SFX/Environment/Waterfall_Loop
+event:/Music/Combat/Intensity_Low
+event:/Music/Combat/Intensity_High
+event:/Music/Exploration/Forest_Day
+event:/UI/Button_Click
+event:/UI/Menu_Open
+event:/VO/NPC/[CharacterID]/[LineID]
 ```
 
 ### Intégration audio - Unity/FMOD

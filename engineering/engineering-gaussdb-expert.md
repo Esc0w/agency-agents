@@ -268,17 +268,17 @@ CREATE INDEX CONCURRENTLY idx_posts_view_count ON posts(view_count DESC);
 ### 7. Gestion des connexions
 
 ```
-# client de ligne de commande GaussDB
-gsql -d gaussdb -p 8000 -h -U dbadmin -W 
+# gsql — GaussDB command-line client
+gsql -d gaussdb -p 8000 -h  -U dbadmin -W 
 
-# Chaîne de connexion JDBC (pilote GaussDB)
-jdbc:gaussdb://:8000/?currentSchema-public&sslmode-require
+# JDBC connection string (GaussDB driver)
+jdbc:gaussdb://:8000/?currentSchema=public&sslmode=require
 
-# Mise en commun des bonnes pratiques :
-# - Utiliser HikariCP / Druide avec le pilote GaussDB JDBC
-# - Connectez-vous au CN (Coordinator Node), pas directement au DN
-# - Ensemble taille de piscine raisonnable: max_connections par CN / number_of_app_instances
-# - Activer prepareThreshold pour les instructions préparées côté serveur
+# Connection pooling best practices:
+# - Use HikariCP / Druid with GaussDB JDBC driver
+# - Connect to CN (Coordinator Node), not DN directly
+# - Set reasonable pool size: max_connections per CN / number_of_app_instances
+# - Enable prepareThreshold for server-side prepared statements
 ```
 
 ## Règles impératives

@@ -47,35 +47,35 @@ system-view
 sysname Core-SW01
 vlan batch 10 20 30
 interface Vlanif10
- adresse IP 192.168.10.1 24
-quitter
+ ip address 192.168.10.1 24
+quit
 interface GigabitEthernet0/0/1
- port lien-type tronc
+ port link-type trunk
  port trunk allow-pass vlan 10 20 30
- annuler l'arrêt
-quitter
+ undo shutdown
+quit
 interface Eth-Trunk1
- mode lacp-statique
- port réseau GigabitEthernet0/0/1
- port réseau GigabitEthernet0/0/2
-quitter
+ mode lacp-static
+ trunkport GigabitEthernet0/0/1
+ trunkport GigabitEthernet0/0/2
+quit
 ip route-static 0.0.0.0 0.0.0.0 192.168.254.1
-ospf 1 identifiant de routeur 10.0.0.1
- zone 0.0.0.0
-  réseau 192.168.0.0 0.0.255.255
-quitter
-enregistrer
+ospf 1 router-id 10.0.0.1
+ area 0.0.0.0
+  network 192.168.0.0 0.0.255.255
+quit
+save
 ```
 
 Vérification sur VRP - toujours lire l'état, ne jamais faire confiance à l'intention:
 
 ```text
-afficher la configuration actuelle
-afficher la table de routage ip
-affichage ospf peer
-interface d'affichage bref
-afficher le vlan
-afficher le logbuffer
+display current-configuration
+display ip routing-table
+display ospf peer
+display interface brief
+display vlan
+display logbuffer
 ```
 
 Les `save` En fin de compte, elle n’est pas négociable. VRP ne persiste pas dans la configuration tout seul; un redémarrage après une modification non enregistrée ramène la boîte à l'état de pré-changement, ce qui sonne bien jusqu'à ce que vous réalisiez que personne ne se souvient de cet état.
@@ -87,25 +87,25 @@ system-view
 sysname Dist-SW01
 vlan 10 20 30
 interface Vlan-interface10
- Adresse IP 192.168.10.1 255.255.255.0
-quitter
-GigabitEthernet1/0/1
- port lien-type tronc
+ ip address 192.168.10.1 255.255.255.0
+quit
+interface GigabitEthernet1/0/1
+ port link-type trunk
  port trunk permit vlan 10 20 30
-quitter
-interface Bridge-Agrégation1
- mode d'agrégation de liens dynamique
-quitter
+quit
+interface Bridge-Aggregation1
+ link-aggregation mode dynamic
+quit
 interface GigabitEthernet1/0/2
- groupe d'agrégation de liens de port 1
-quitter
+ port link-aggregation group 1
+quit
 ip route-static 0.0.0.0 0 192.168.254.1
-ospf 1 identifiant de routeur 10.0.0.2
- zone 0.0.0.0
-  réseau 192.168.0.0 0.0.255.255
-quitter
-retour
-sauver la force
+ospf 1 router-id 10.0.0.2
+ area 0.0.0.0
+  network 192.168.0.0 0.0.255.255
+quit
+return
+save force
 ```
 
 Comware getchas qui coûtent du temps de production aux gens:
@@ -118,30 +118,30 @@ Comware getchas qui coûtent du temps de production aux gens:
 ### 3 ‘Configuration Ruijie RGOS (passerelle de succursale + accès)
 
 ```text
-permettre
-configurer le terminal
-Nom d'hôte Branch-GW
+enable
+configure terminal
+hostname Branch-GW
 !
 interface GigabitEthernet 0/1
  description WAN-ISP-1
- Adresse IP dhcp
- aucun arrêt
+ ip address dhcp
+ no shutdown
 !
 interface GigabitEthernet 0/2
  description WAN-ISP-2
- Adresse IP 100.64.0.2 255.255.255.0
+ ip address 100.64.0.2 255.255.255.0
 !
 interface vlan 1
- adresse IP 192.168.1.1 255.255.255.0
+ ip address 192.168.1.1 255.255.255.0
 !
 ip route 0.0.0.0 0.0.0.0 100.64.0.1
 !
 ip access-list standard LAN
- permis 192.168.1.0 0.0.0.255
+ permit 192.168.1.0 0.0.0.255
 !
-nat dans la liste des sources Interface LAN GigabitEthernet 0/1 surcharge
+nat inside source list LAN interface GigabitEthernet 0/1 overload
 !
-écrire
+write
 ```
 
 Ruijie RGOS parle la grammaire Cisco avec le vocabulaire Ruijie:
@@ -156,24 +156,24 @@ Ruijie RGOS parle la grammaire Cisco avec le vocabulaire Ruijie:
 configure
 set zone name trust
 set zone name untrust
-définir le nom de la zone dmz
+set zone name dmz
 !
 interface ethernet0/0
- Adresse IP 192.168.1.1/24
- Zone Trust
-sortie
+ ip address 192.168.1.1/24
+ zone trust
+exit
 !
 interface ethernet0/1
- Adresse IP 100.64.0.2/24
- zone de défiance
-sortie
+ ip address 100.64.0.2/24
+ zone untrust
+exit
 !
-politique-mondiale
-règle id 1 nom LAN-to-Internet de la confiance à la défiance src-addr tout dst-addr tout service tout permis
-règle id 2 nom DMZ-to-Internet de dmz à untrust src-addr tout dst-addr tout service tout permis
-sortie
+policy-global
+rule id 1 name LAN-to-Internet from trust to untrust src-addr any dst-addr any service any permit
+rule id 2 name DMZ-to-Internet from dmz to untrust src-addr any dst-addr any service any permit
+exit
 !
-Afficher la configuration
+show configuration
 ```
 
 StoneOS est un système d'exploitation pare-feu zone/VRouter, et plus vite vous arrêtez de penser "routeur avec ACL" moins vous faites d'erreurs de production:
@@ -187,21 +187,21 @@ StoneOS est un système d'exploitation pare-feu zone/VRouter, et plus vite vous 
 ### Produit livrable 5 — Tableau de traduction de mémoire musculaire Cisco
 
 ```text
-Cisco Huawei VRP H3C Comware Ruijie RGOS
+Cisco                    Huawei VRP            H3C Comware          Ruijie RGOS
 -------                  ----------            -----------          -----------
-configure terminal system-view configure terminal
-show running-config display current-conf display current- show running-config
-show ip route display ip routage- display ip show ip route
-                         table de routage-table
-interface Gi0/1 interface Gigabit- interface Gigabit- interface GigabitEthernet 0/1
-                         Ethernet0/0/1 Ethernet1/0/1
-ip route 0.0.0.0 ... ip route-statique ip route-statique ip route 0.0.0.0 ...
+configure terminal       system-view           system-view         configure terminal
+show running-config      display current-conf  display current-    show running-config
+show ip route            display ip routing-   display ip          show ip route
+                         table                 routing-table
+interface Gi0/1          interface Gigabit-    interface Gigabit-   interface GigabitEthernet 0/1
+                         Ethernet0/0/1         Ethernet1/0/1
+ip route 0.0.0.0 ...     ip route-static       ip route-static      ip route 0.0.0.0 ...
                          0.0.0.0 0.0.0.0 ...   0.0.0.0 0 ...
-aucun arrêt aucun arrêt aucun arrêt aucun arrêt
-write mem / copy run enregistrer enregistrer force écrire
-spanning-tree mode stp mode spanning-tree mode
-interface port-canal interface Eth-Trunk interface Bridge- interface agrégatport / 
-                                                 Agrégation Port-Channel (modèle dep.)
+no shutdown              undo shutdown         undo shutdown        no shutdown
+write mem / copy run     save                  save force           write
+spanning-tree mode       stp mode              stp mode             spanning-tree mode
+interface port-channel   interface Eth-Trunk   interface Bridge-    interface aggregateport / 
+                                                 Aggregation         Port-Channel (model dep.)
 ```
 
 Les deux premières colonnes sont la traduction la plus fréquemment demandée sur le marché intérieur, car de nombreuses entreprises chinoises ont remplacé le matériel Catalyst vieillissant par des noyaux de la série S. Lorsque vous traduisez, traduisez la sémantique, pas les mots : `save` sur les cartes VRP à `write` sur Cisco, mais les VRP `save` gère également la distinction startup-config, donc confirmez toujours ce que la fenêtre de modification de l'utilisateur attend.

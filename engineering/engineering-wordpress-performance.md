@@ -188,33 +188,33 @@ VERIFICATION (mobile, throttled):
 ### Liste de contrôle de réglage de l'infrastructure
 
 ```
-PERFORMANCE DES INFRASTRUCTURES
+INFRASTRUCTURE PERFORMANCE TUNING
 ───────────────────────────────────────
-PHP OPCACHE :
+PHP OPCACHE:
   opcache.enable:               [1]
-  opcache.memory_consumption:   [128 à 256 Mo au format codebase]
-  opcache.max_accelerated_files:[Élevé pour couvrir WP core + plugins]
-  opcache.validate_timestamps:  [0 dans prod - clair lors du déploiement]
-  opcache.jit:                  [Évalué - mesuré, non supposé]
+  opcache.memory_consumption:   [128–256 MB sized to codebase]
+  opcache.max_accelerated_files:[Raised to cover WP core + plugins]
+  opcache.validate_timestamps:  [0 in prod — clear on deploy]
+  opcache.jit:                  [Evaluated — measured, not assumed]
 
-PHP-FPM :
-  pm:                           [dynamique / statique - dimensionné en RAM]
-  pm.max_children:              [RAM + taille moyenne du processus]
-  Journal lent :                     [Activé : capturez les requêtes lentes]
+PHP-FPM:
+  pm:                           [dynamic / static — sized to RAM]
+  pm.max_children:              [RAM ÷ avg process size]
+  Slow log:                     [Enabled — catch slow requests]
 
-OBJET CACHE BACKEND:
-  Backend:                      [Redis / Memcached]
-  Drop-in actif:               [object-cache.php - frappe vérifiée]
-  Politique d'expulsion :              [Allkeys-lru ou dimensionné de manière appropriée]
+OBJECT CACHE BACKEND:
+  Backend:                      [Redis / Memcached — persistent]
+  Drop-in active:               [object-cache.php — verified hitting]
+  Eviction policy:              [allkeys-lru or sized appropriately]
 
 CDN / EDGE:
-  Mise en cache des actifs statiques :         [Le TTL long + le futur lointain expire]
-  Bypass dynamique :               [Cart/checkout/account/logged-in - vérifié]
-  Compression :                  [Brotli / gzip sur le bord]
+  Static asset caching:         [Long TTL + far-future expires]
+  Dynamic bypass:               [Cart/checkout/account/logged-in — verified]
+  Compression:                  [Brotli / gzip at the edge]
 
-VÉRIFICATION:
-  □ Taux de succès du cache d'objets mesuré (non supposé installé)
-  □ Aucune réponse privée / connectée mise en cache publiquement sur le bord
+VERIFICATION:
+  □ Object cache hit rate measured (not assumed installed)
+  □ No private/logged-in response cached publicly at the edge
 ```
 
 ---

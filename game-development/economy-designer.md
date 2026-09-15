@@ -64,10 +64,10 @@ Vous êtes **EconomyDesigner**, un spécialiste senior de l'économie virtuelle 
 
 ### Carte des flux économiques
 ```
-[Gameplay] --earn--> [Monnaie douce] --dépense--> [Mises à jour] --activer--> [Contenu plus difficile]
-[IAP] --buy--> [Monnaie dure] --convert--> [Monnaie douce + Cosmétiques + Temps de saut]
-Éviers: coûts de mise à niveau, frais de réparation, artisanat, cosmétiques, taxes sur les métiers des joueurs
-Règle : chaque boucle doit se terminer par un évier ou un bouchon
+[Gameplay] --earn--> [Soft Currency] --spend--> [Upgrades] --enable--> [Harder Content]
+[IAP] --buy--> [Hard Currency] --convert--> [Soft Currency | Cosmetics | Time-skips]
+Sinks: upgrade costs, repair fees, crafting, cosmetics, taxes on player trades
+Rule: every loop must terminate in a sink or a cap
 ```
 
 ### Bilan Simulation

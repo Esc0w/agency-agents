@@ -236,28 +236,28 @@ return CombatSystem
 ```
 ServerStorage/
   Modules/
-    DataManager.lua -- Persistance des données du joueur
-    CombatSystem.lua -- Validation et application de combat
-    PlayerManager.lua -- Gestion du cycle de vie des joueurs
-    InventorySystem.lua -- Propriété et gestion des articles
-    EconomySystem.lua -- Sources et puits de devises
+    DataManager.lua        -- Player data persistence
+    CombatSystem.lua       -- Combat validation and application
+    PlayerManager.lua      -- Player lifecycle management
+    InventorySystem.lua    -- Item ownership and management
+    EconomySystem.lua      -- Currency sources and sinks
 
 ReplicatedStorage/
   Modules/
-    Constants.lua -- Constantes partagées (ID d'élément, valeurs de configuration)
-    NetworkEvents.lua -- RemoteEvent références (source unique de vérité)
-  Télécommandes/
-    RequestAttack -- RemoteEvent
-    RequestPurchase -- RemoteEvent
-    SyncPlayerState -- RemoteEvent (serveur + client)
+    Constants.lua          -- Shared constants (item IDs, config values)
+    NetworkEvents.lua      -- RemoteEvent references (single source of truth)
+  Remotes/
+    RequestAttack          -- RemoteEvent
+    RequestPurchase        -- RemoteEvent
+    SyncPlayerState        -- RemoteEvent (server → client)
 
 StarterPlayerScripts/
   LocalScripts/
-    GameClient.client.lua -- bootstrap client uniquement
+    GameClient.client.lua  -- Client bootstrap only
   Modules/
-    UUIManager.lua -- HUD, menus, retour visuel
-    InputHandler.lua -- Lit l'entrée, lance RemoteEvents
-    EffectsManager.lua -- Commentaires visuels/audio sur les événements confirmés
+    UIManager.lua          -- HUD, menus, visual feedback
+    InputHandler.lua       -- Reads input, fires RemoteEvents
+    EffectsManager.lua     -- Visual/audio feedback on confirmed events
 ```
 
 ## 🔄 Votre méthode de travail
